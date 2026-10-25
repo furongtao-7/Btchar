@@ -1,0 +1,31 @@
+Btchar 开源许可协议 / License
+================================
+
+版权所有 (c) 2026 Btchar contributors
+
+本项目采用 **知识共享署名-非商业性使用 4.0 国际协议 (CC BY-NC 4.0)**。
+
+完整法律文本 / Full legal code:
+https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+## 你可以（You are free to）:
+
+- ✅ **共享** — 以任何媒介或格式复制、分发本软件
+- ✅ **改编** — 修改、转换本软件，或基于它创作新作品
+- ✅ 任何用途只要该用途**不是以商业获利为主要目的**
+
+## 你必须（Under the following terms）:
+
+- ⚠️ **署名** — 必须给出适当的署名（指向本仓库的链接），并注明是否作了修改
+- 🚫 **非商业用途** — 不得将本软件（整体或部分、原版或修改版）用于商业目的。
+  商业目的包括但不限于：销售、付费服务、企业内部商业用途、
+  用于直接或间接获利的产品或服务。
+
+## 附加说明:
+
+- 本软件按"现状"提供，不提供任何明示或暗示的保证，作者不承担任何损失或损害责任
+- 所依赖的第三方开源库（faster-whisper、yt-dlp、pywebview 等）
+  各自遵循其原始开源协议
+- 如需商业授权，请联系仓库所有者
+
+For an English summary see: https://creativecommons.org/licenses/by-nc/4.0/

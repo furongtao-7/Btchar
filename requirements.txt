@@ -1,0 +1,18 @@
+# Btchar 依赖 (Python 3.9+, Windows)
+# 安装: pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+yt-dlp>=2025.1.1        # 通用视频下载(B站以外平台 + B站兜底)
+faster-whisper>=1.0.0   # 本地语音识别(CTranslate2加速版Whisper)
+requests>=2.28          # HTTP请求(含SSRF防护层)
+pywebview>=5.0          # 原生应用窗口(WebView2)
+imageio-ffmpeg>=0.4.9   # 内嵌ffmpeg二进制(音视频合成/截取, 无需系统安装)
+qrcode>=7.0             # B站扫码登录二维码
+pillow>=9.0             # 图标与二维码图像处理
+soundcard>=0.4.6        # 边播边转: 捕获系统声音(WASAPI回环)
+
+# 可选: 中文分词(更准的AI摘要关键词; 未安装时自动用内置bigram分词)
+# jieba>=0.42
+
+# 可选: GPU加速(Windows + NVIDIA显卡, 不装则自动用CPU)
+# nvidia-cublas-cu12
+# nvidia-cudnn-cu12

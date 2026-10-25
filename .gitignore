@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 隐私: B站登录凭证(等同于账号登录态, 绝不能提交!)
+bili_login_cookies.txt
+cookies.txt
+login_qr.png
+
+# 用户数据与运行产物
+transcripts/
+cache/
+audio_tmp/
+*.log
+Btchar_lifecycle.log
+
+# 系统
+Thumbs.db
+.DS_Store
