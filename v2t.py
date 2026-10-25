@@ -531,6 +531,9 @@ def download_stream(url, dest_path, referer=None, expect_size=None, label="下�
             raise RuntimeError("音频流HTTP %s" % resp.status_code)
         total = int(resp.headers.get("Content-Length") or 0) or expect_size or 0
         done = 0
+        # 防路径穿越: 写入目标必须位于其基目录内, 经 safe_output_path 收敛校验
+        dest_path = safe_output_path(dest_path.resolve().parent,
+                                     dest_path.name)
         with open(dest_path, "wb") as f:
             for chunk in resp.iter_content(chunk_size=256 * 1024):
                 f.write(chunk)

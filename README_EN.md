@@ -40,7 +40,7 @@ Transcription runs **fully locally** — your audio never leaves your machine.
 ## Install (Windows, Python 3.9+)
 
 ```bat
-git clone https://github.com/yourname/Btchar.git
+git clone https://github.com/furongtao-7/Btchar.git
 cd Btchar
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt

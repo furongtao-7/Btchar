@@ -45,7 +45,7 @@
 ## 安装（Windows + Python 3.9+）
 
 ```bat
-git clone https://github.com/你的用户名/Btchar.git
+git clone https://github.com/furongtao-7/Btchar.git
 cd Btchar
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
