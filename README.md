@@ -44,6 +44,11 @@
 
 ## 安装（Windows + Python 3.9+）
 
+**📦 快速下载**（免 git）：
+[点击下载最新代码 ZIP](https://github.com/furongtao-7/Btchar/archive/refs/heads/main.zip)
+· 国内加速：[镜像下载](https://ghproxy.net/https://github.com/furongtao-7/Btchar/archive/refs/heads/main.zip)
+下载后解压到任意目录，进入下一步。
+
 ```bat
 git clone https://github.com/furongtao-7/Btchar.git
 cd Btchar

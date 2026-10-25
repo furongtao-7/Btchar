@@ -1,18 +1,9 @@
 @echo off
-rem æ‰“åŒ… Btchar ä¸ºå•æ–‡ä»¶å¤¹exe (è¾“å‡ºåœ¨ dist\Btchar\)
-rem æ³¨æ„: é¦–æ¬¡æ‰“åŒ…å‰è¯·å…ˆç”¨Appå®Œæ•´è·‘ä¸€æ¬¡è½¬æ¢, ç¡®ä¿æ¨¡å‹å·²ç¼“å­˜
+rem ´ò°ü Btchar Îªµ¥ÎÄ¼ş¼Ğexe (Êä³öÔÚ dist\Btchar\)
 chcp 65001 >nul
 cd /d "%~dp0"
 ".venv\Scripts\python.exe" -m pip install -q pyinstaller -i https://pypi.tuna.tsinghua.edu.cn/simple
-".venv\Scripts\python.exe" -m PyInstaller ^
-  --noconfirm --clean --windowed --name Btchar ^
-  --icon Btchar.ico ^
-  --add-data "static;static" ^
-  --add-data "Btchar.ico;." ^
-  --hidden-import yt_dlp ^
-  --collect-all faster_whisper ^
-  --collect-all ctranslate2 ^
-  app_native.py
+".venv\Scripts\python.exe" -m PyInstaller --noconfirm --clean --windowed --name Btchar --icon Btchar.ico --add-data "static;static" --add-data "Btchar.ico;." --hidden-import yt_dlp --hidden-import soundcard --hidden-import av --collect-all faster_whisper --collect-all ctranslate2 --collect-all soundcard --collect-all pywebview --collect-all pythonnet app_native.py
 echo.
-echo æ‰“åŒ…å®Œæˆ: dist\Btchar\Btchar.exe (æ•´ä¸ªæ–‡ä»¶å¤¹ä¸€èµ·åˆ†å‘)
+echo ´ò°üÍê³É: dist\Btchar\Btchar.exe (Õû¸öÎÄ¼ş¼ĞÒ»Æğ·Ö·¢)
 pause

@@ -39,6 +39,10 @@ Transcription runs **fully locally** — your audio never leaves your machine.
 
 ## Install (Windows, Python 3.9+)
 
+**📦 Quick download** (no git needed):
+[Download latest ZIP](https://github.com/furongtao-7/Btchar/archive/refs/heads/main.zip),
+extract anywhere, then continue below.
+
 ```bat
 git clone https://github.com/furongtao-7/Btchar.git
 cd Btchar

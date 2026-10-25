@@ -13,8 +13,12 @@ login_qr.png
 transcripts/
 cache/
 audio_tmp/
+_mock_out/
 *.log
 Btchar_lifecycle.log
+build/
+dist/
+Btchar-*.zip
 
 # 系统
 Thumbs.db

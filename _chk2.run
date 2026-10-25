@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+"""临时: 编译检查全部模块 + 验证分P解析。"""
+import py_compile
+import sys
+
+ok = True
+for f in ("webapp.py", "app_native.py", "v2t.py", "btstream.py",
+          "livetrans.py", "summarizer.py"):
+    try:
+        py_compile.compile(r"D:\文案摘要\video2text" + "\\" + f,
+                           doraise=True)
+        print("OK", f)
+    except Exception as e:
+        ok = False
+        print("FAIL", f, e)
+
+sys.path.insert(0, r"D:\文案摘要\video2text")
+import webapp  # noqa: E402
+
+cases = [
+    ("https://www.bilibili.com/video/BV1abc?p=3", 3),
+    ("https://www.bilibili.com/video/BV1abc", 1),
+    ("https://b23.tv/x?p=2", 2),
+    ("BV1abc", 1),
+]
+for u, want in cases:
+    got = webapp._page_from_url(u)
+    print("P解析", u[-16:], "->", got, "OK" if got == want else "FAIL")
+print("COMPILE_ALL_OK" if ok else "COMPILE_FAILED")

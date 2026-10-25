@@ -23,7 +23,13 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+if getattr(sys, "frozen", False):
+    # PyInstaller 打包: 静态资源在 _MEIPASS(_internal), 用户数据写到 exe 旁边
+    BASE_DIR = Path(sys.executable).resolve().parent
+    STATIC = Path(getattr(sys, "_MEIPASS", BASE_DIR)) / "static"
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+    STATIC = BASE_DIR / "static"
 sys.path.insert(0, str(BASE_DIR))
 import v2t  # noqa: E402
 
@@ -31,7 +37,6 @@ HOST = "127.0.0.1"
 PORT = 8917
 ACTUAL_PORT = PORT  # main() 启动后更新为真实端口
 CACHE = BASE_DIR / "cache"
-STATIC = BASE_DIR / "static"
 CACHE.mkdir(parents=True, exist_ok=True)
 
 # 允许调用的外部程序白名单(安装在本venv内的固定二进制)
@@ -48,7 +53,8 @@ def _checked_run(argv, timeout=300):
     exe = Path(argv[0]).resolve()
     if not exe.is_file():
         raise RuntimeError("可执行文件不存在: %s" % exe)
-    if str(exe).startswith(str(BASE_DIR / ".venv")):
+    if getattr(sys, "frozen", False) or str(exe).startswith(
+            str(BASE_DIR / ".venv")):
         return subprocess.run([str(exe)] + argv[1:], shell=False,
                               capture_output=True, text=True, timeout=timeout)
     raise RuntimeError("程序不在白名单内: %s" % exe)
@@ -56,6 +62,9 @@ def _checked_run(argv, timeout=300):
 
 def get_ffmpeg_exe_safe():
     from imageio_ffmpeg import get_ffmpeg_exe
+    if getattr(sys, "frozen", False):
+        # 打包环境: ffmpeg 随exe分发, 整体受信
+        return str(Path(get_ffmpeg_exe()).resolve())
     exe = str(Path(get_ffmpeg_exe()).resolve())
     if not exe.startswith(str(BASE_DIR / ".venv")):
         raise RuntimeError("ffmpeg 不在venv白名单内")
@@ -224,6 +233,27 @@ def _live_on_status(text):
 
 
 # ---------------------------------------------------------------- 转换任务
+
+def _page_from_url(url):
+    """从B站链接解析分P号(缺省1): ...video/BVxxx?p=3。"""
+    m = re.search(r"[?&]p=(\d+)", url or "")
+    return int(m.group(1)) if m else 1
+
+
+def _pick_page(url, view):
+    """按链接里的p参数选定分P(无参数或越界则P1)。"""
+    pages = (view.get("pages")
+             or [{"page": 1, "cid": view.get("cid"),
+                  "part": view.get("title"),
+                  "duration": view.get("duration")}])
+    pn = _page_from_url(url)
+    page = next((x for x in pages if x.get("page") == pn), pages[0])
+    title = view.get("title", view.get("bvid") or "")
+    if len(pages) > 1:
+        title = "%s P%d %s" % (title, page.get("page", 1),
+                               page.get("part") or "")
+    return page, title
+
 
 def _pick_bili_video(dash):
     """选浏览器能直接播放的H.264流(1080p以内最高清)。"""
@@ -455,13 +485,12 @@ def run_job(sid, src, resume_at=0.0, model="small"):
                 view = v2t.fetch_bili_view(bvid=value if kind == "bvid" else None,
                                            aid=value if kind == "aid" else None)
                 bvid = view.get("bvid") or value
-                title = view.get("title", bvid)
+                page, title = _pick_page(url, view)
+                title = title or bvid
                 cover = view.get("pic") or ""
-                page = (view.get("pages") or [{"page": 1,
-                                               "cid": view.get("cid")}])[0]
                 emit(sid, "meta", {"title": title, "cover": cover,
-                              "duration": view.get("duration") or 0})
-
+                                   "duration": page.get("duration")
+                                   or view.get("duration") or 0})
                 cookie_header = v2t.build_bili_cookie_header(None)
                 # 字幕优先(登录后AI字幕秒出)
                 segs = v2t.fetch_bili_cc_subtitles(bvid, page["cid"], cookie_header)

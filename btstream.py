@@ -155,12 +155,12 @@ def run_stream_job(sid, src, model="small"):
         view = v2t.fetch_bili_view(bvid=value if kind == "bvid" else None,
                                    aid=value if kind == "aid" else None)
         bvid = view.get("bvid") or value
-        title = view.get("title", bvid)
+        page, title = webapp._pick_page(url, view)
+        title = title or bvid
         cover = view.get("pic") or ""
-        page = (view.get("pages") or [{"page": 1,
-                                       "cid": view.get("cid")}])[0]
         emit(sid, "meta", {"title": title, "cover": cover,
-                           "duration": view.get("duration") or 0})
+                           "duration": page.get("duration")
+                           or view.get("duration") or 0})
         cookie_header = v2t.build_bili_cookie_header(None)
         referer = v2t.bili_audio_url(bvid, page.get("page", 1))
 
